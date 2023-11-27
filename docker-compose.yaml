@@ -1,0 +1,43 @@
+version: '3.7'
+
+services:
+  web:
+    build: .
+    container_name: mmvs_test_web
+    ports:
+      - '8080:8080'
+    restart: unless-stopped
+    depends_on:
+      - db
+    environment:
+      DB_URL: "jdbc:postgresql://mmvs_test_db:5432/${DB_NAME}"
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - 'storage:/home/storage'
+    networks:
+      - mmvs_net
+  db:
+    image: postgres
+    restart: unless-stopped
+    container_name: mmvs_test_db
+    environment:
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - 'db:/var/lib/postgresql/data'
+    networks:
+      - mmvs_net
+
+volumes:
+  db:
+    name: mmvs_db
+  storage:
+    name: mmvs_storage
+
+networks:
+  mmvs_net:
+    name: ${NETWORK_NAME}
+    driver: bridge
