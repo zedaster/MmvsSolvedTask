@@ -1,0 +1,11 @@
+# Duplicate the file, rename this to .compose-env
+# Adjust the variables
+# To up the compose call
+# docker compose --env-file .compose-env up -d
+# To remove all containers, images and volumes made by this composer user
+# docker compose down -v --rmi all
+
+DB_USERNAME=postgres
+DB_PASSWORD=pass123
+DB_NAME=postgres
+NETWORK_NAME=mmvs_test
